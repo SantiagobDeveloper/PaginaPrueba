@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataformas Tecnológicas - Curso Académico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables CSS para tema futurista */
+        :root {
+            --primary-color: #0a0e17;
+            --secondary-color: #00d4ff;
+            --accent-color: #7b00ff;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(15, 20, 35, 0.8);
+            --glow-color: rgba(0, 212, 255, 0.6);
+            --header-bg: rgba(10, 14, 23, 0.95);
+        }
+        
+        /* Reset y estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(123, 0, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 20%);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Contenedor principal */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Encabezado */
+        header {
+            background-color: var(--header-bg);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.2rem;
+            color: var(--secondary-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Navegación */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        /* Menú hamburguesa para móviles */
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+        
+        /* Banner */
+        .banner {
+            position: relative;
+            height: 400px;
+            margin-bottom: 50px;
+            overflow: hidden;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(10, 14, 23, 0.9) 30%, rgba(10, 14, 23, 0.5) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 60px;
+            z-index: 2;
+        }
+        
+        .banner h2 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .banner p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 25px;
+            color: #ddd;
+        }
+        
+        .banner-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/banner.jpg') center/cover no-repeat;
+            z-index: 1;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(0.5deg); }
+        }
+        
+        /* Contenido principal */
+        main {
+            flex: 1;
+            padding: 30px 0 60px;
+        }
+        
+        /* Secciones de contenido */
+        section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+            position: relative;
+            color: var(--secondary-color);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: var(--secondary-color);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+        
+        /* Tarjetas de contenido */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--secondary-color), var(--accent-color));
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.15);
+        }
+        
+        .card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h3 i {
+            font-size: 1.4rem;
+        }
+        
+        .card p {
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+        
+        .card ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .card li {
+            margin-bottom: 8px;
+            color: #bbb;
+        }
+        
+        .card li strong {
+            color: var(--secondary-color);
+        }
+        
+        /* Referencias */
+        .references {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 5px solid var(--accent-color);
+        }
+        
+        .references h3 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .references ul {
+            list-style: none;
+        }
+        
+        .references li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .references li::before {
+            content: '▸';
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+        }
+        
+        .references a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .references a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+        
+        /* Pie de página */
+        footer {
+            background-color: rgba(5, 10, 20, 0.95);
+            padding: 40px 0 20px;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--secondary-color);
+        }
+        
+        .footer-section p, .footer-section li {
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+            width: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .banner h2 {
+                font-size: 2.5rem;
+            }
+            
+            .card-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            nav ul {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--header-bg);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            nav ul.active {
+                max-height: 400px;
+            }
+            
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav ul li a {
+                display: block;
+                padding: 15px;
+                border-radius: 0;
+            }
+            
+            .banner {
+                height: 350px;
+            }
+            
+            .banner-content {
+                padding: 0 30px;
+            }
+            
+            .banner h2 {
+                font-size: 2rem;
+            }
+            
+            .banner p {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .banner {
+                height: 300px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Plataformas Tecnológicas</h1>
+                    <p>Curso Académico - Universidad de Pamplona</p>
+                </div>
+            </div>
+            
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#introduccion"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="#sistemas-operativos"><i class="fas fa-desktop"></i> Sistemas Operativos</a></li>
+                    <li><a href="#gestion-procesos"><i class="fas fa-tasks"></i> Gestión de Procesos</a></li>
+                    <li><a href="#gestion-memoria"><i class="fas fa-memory"></i> Gestión de Memoria</a></li>
+                    <li><a href="#gestion-almacenamiento"><i class="fas fa-hdd"></i> Gestión de Almacenamiento</a></li>
+                    <li><a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Banner principal -->
+    <section class="banner">
+        <div class="banner-bg"></div>
+        <div class="banner-content">
+            <h2>Plataformas Tecnológicas</h2>
+            <p>Explora los fundamentos de los sistemas operativos y la gestión de recursos computacionales en este curso académico. Descubre cómo funcionan las plataformas tecnológicas que soportan el mundo digital actual.</p>
+            <a href="#introduccion" class="btn" style="background: linear-gradient(to right, var(--secondary-color), var(--accent-color)); color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; display: inline-block; width: fit-content; box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3); transition: transform 0.3s ease;">Comenzar Exploración</a>
+        </div>
+    </section>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <!-- Introducción -->
+        <section id="introduccion">
+            <h2 class="section-title">Introducción al Curso</h2>
+            <div class="card">
+                <h3><i class="fas fa-info-circle"></i> Objetivos del Curso</h3>
+                <p>Este curso de <strong>Plataformas Tecnológicas</strong> tiene como objetivo proporcionar a los estudiantes los conocimientos fundamentales sobre los sistemas operativos y la gestión de recursos computacionales. A lo largo del semestre, exploraremos los conceptos esenciales que permiten el funcionamiento eficiente de las plataformas tecnológicas modernas.</p>
+                <p>El contenido está diseñado para que los estudiantes comprendan la arquitectura de los sistemas operativos, los mecanismos de gestión de procesos, memoria y almacenamiento, así como las tendencias actuales en el desarrollo de plataformas tecnológicas.</p>
+                
+                <h4 style="margin-top: 20px; color: var(--secondary-color);">Docente del Curso:</h4>
+                <p><strong>Ing. Eduardo Rueda Fajardo</strong> - Universidad de Pamplona, Facultad de Ingeniería de Sistemas</p>
+            </div>
+        </section>
+
+        <!-- Sistemas Operativos -->
+        <section id="sistemas-operativos">
+            <h2 class="section-title">Introducción a los Sistemas Operativos</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3><i class="fas fa-cogs"></i> ¿Qué es un Sistema Operativo?</h3>
+                    <p>Un sistema operativo (SO) es un software que actúa como intermediario entre el usuario y el hardware de una computadora. Su propósito principal es proporcionar un entorno en el que el usuario pueda ejecutar programas de manera conveniente y eficiente.</p>
+                    <p>El sistema operativo gestiona los recursos del hardware y proporciona servicios comunes para los programas de aplicación.</p>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-layer-group"></i> Funciones Principales</h3>
+                    <ul>
+                        <li><strong>Gestión de procesos:</strong> Controla la ejecución de programas y asigna recursos del sistema.</li>
+                        <li><strong>Gestión de memoria:</strong> Administra la memoria principal y el almacenamiento temporal.</li>
+                        <li><strong>Sistema de archivos:</strong> Organiza y controla el acceso a los datos almacenados.</li>
+                        <li><strong>Gestión de dispositivos:</strong> Controla todos los dispositivos de entrada/salida.</li>
+                        <li><strong>Seguridad y protección:</strong> Controla el acceso a los recursos del sistema.</li>
+                        <li><strong>Interfaz de usuario:</strong> Permite la interacción entre el usuario y el sistema.</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-desktop"></i> Tipos de Sistemas Operativos</h3>
+                    <ul>
+                        <li><strong>Sistemas por lotes:</strong> Ejecutan trabajos sin interacción del usuario.</li>
+                        <li><strong>Sistemas interactivos:</strong> Permiten la interacción directa del usuario.</li>
+                        <li><strong>Sistemas de tiempo compartido:</strong> Permiten múltiples usuarios simultáneamente.</li>
+                        <li><strong>Sistemas en tiempo real:</strong> Responden a eventos en tiempo específico.</li>
+                        <li><strong>Sistemas distribuidos:</strong> Gestionan un grupo de computadoras independientes.</li>
+                        <li><strong>Sistemas embebidos:</strong> Diseñados para dispositivos específicos.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gestión de Procesos -->
+        <section id="gestion-procesos">
+            <h2 class="section-title">Gestión de Procesos</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3><i class="fas fa-tasks"></i> Concepto de Proceso</h3>
+                    <p>Un proceso es un programa en ejecución. Incluye el código del programa, los datos y la información de estado (registros, contador de programa, puntero de pila, etc.).</p>
+                    <p>El sistema operativo es responsable de la creación, planificación, ejecución y terminación de procesos, así como de la sincronización y comunicación entre ellos.</p>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-sync-alt"></i> Estados de un Proceso</h3>
+                    <ul>
+                        <li><strong>Nuevo:</strong> El proceso se está creando.</li>
+                        <li><strong>Listo:</strong> El proceso está listo para ejecutarse y espera la CPU.</li>
+                        <li><strong>En ejecución:</strong> Las instrucciones se están ejecutando.</li>
+                        <li><strong>Espera:</strong> El proceso espera por algún evento.</li>
+                        <li><strong>Terminado:</strong> El proceso ha terminado su ejecución.</li>
+                    </ul>
+                    <p>El cambio entre estos estados se conoce como <strong>planificación de procesos</strong>.</p>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-project-diagram"></i> Planificación de Procesos</h3>
+                    <p>La planificación de procesos determina qué proceso se ejecuta en un momento dado. Existen diferentes algoritmos de planificación:</p>
+                    <ul>
+                        <li><strong>FCFS (First-Come, First-Served):</strong> El primero en llegar es el primero en ser atendido.</li>
+                        <li><strong>SJF (Shortest Job First):</strong> Se ejecuta primero el proceso más corto.</li>
+                        <li><strong>Round Robin:</strong> Asigna un quantum de tiempo a cada proceso.</li>
+                        <li><strong>Por prioridades:</strong> Los procesos con mayor prioridad se ejecutan primero.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gestión de Memoria -->
+        <section id="gestion-memoria">
+            <h2 class="section-title">Gestión de Memoria</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3><i class="fas fa-memory"></i> Jerarquía de Memoria</h3>
+                    <p>Los sistemas computacionales utilizan una jerarquía de memoria para equilibrar velocidad, capacidad y costo:</p>
+                    <ul>
+                        <li><strong>Registros:</strong> Más rápidos, menor capacidad.</li>
+                        <li><strong>Caché:</strong> Memoria rápida cercana al procesador.</li>
+                        <li><strong>Memoria principal (RAM):</strong> Memoria de trabajo del sistema.</li>
+                        <li><strong>Memoria secundaria (disco duro):</strong> Gran capacidad, más lenta.</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-compress-arrows-alt"></i> Técnicas de Gestión</h3>
+                    <ul>
+                        <li><strong>Asignación contigua:</strong> Asigna espacios continuos de memoria.</li>
+                        <li><strong>Paginación:</strong> Divide la memoria en páginas de tamaño fijo.</li>
+                        <li><strong>Segmentación:</strong> Divide la memoria en segmentos de tamaño variable.</li>
+                        <li><strong>Memoria virtual:</strong> Extiende la memoria usando almacenamiento secundario.</li>
+                    </ul>
+                    <p>La memoria virtual permite ejecutar programas más grandes que la memoria física disponible.</p>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-exchange-alt"></i> Algoritmos de Reemplazo</h3>
+                    <p>Cuando la memoria está llena, es necesario reemplazar páginas. Algoritmos comunes:</p>
+                    <ul>
+                        <li><strong>FIFO (First-In, First-Out):</strong> Reemplaza la página más antigua.</li>
+                        <li><strong>LRU (Least Recently Used):</strong> Reemplaza la página no usada por más tiempo.</li>
+                        <li><strong>Óptimo:</strong> Reemplaza la página que no se usará por más tiempo (teórico).</li>
+                        <li><strong>Reloj:</strong> Implementación eficiente similar a LRU.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gestión de Almacenamiento -->
+        <section id="gestion-almacenamiento">
+            <h2 class="section-title">Gestión de Almacenamiento</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3><i class="fas fa-hdd"></i> Sistemas de Archivos</h3>
+                    <p>Un sistema de archivos organiza y controla cómo se almacenan y recuperan los datos en un dispositivo de almacenamiento. Proporciona:</p>
+                    <ul>
+                        <li><strong>Organización jerárquica:</strong> Directorios y subdirectorios.</li>
+                        <li><strong>Gestión de espacio libre:</strong> Control del espacio disponible.</li>
+                        <li><strong>Protección y seguridad:</strong> Control de acceso a los archivos.</li>
+                        <li><strong>Confiabilidad:</strong> Mecanismos de recuperación ante fallos.</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-database"></i> Tipos de Sistemas de Archivos</h3>
+                    <ul>
+                        <li><strong>FAT (File Allocation Table):</strong> Sistema antiguo, simple.</li>
+                        <li><strong>NTFS (New Technology File System):</strong> Sistema de Windows con características avanzadas.</li>
+                        <li><strong>ext4 (Fourth Extended File System):</strong> Sistema común en Linux.</li>
+                        <li><strong>APFS (Apple File System):</strong> Sistema moderno de Apple.</li>
+                        <li><strong>ZFS (Zettabyte File System):</strong> Sistema con funciones avanzadas de integridad.</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-shield-alt"></i> RAID y Tolerancia a Fallos</h3>
+                    <p>RAID (Redundant Array of Independent Disks) combina múltiples discos para mejorar el rendimiento y/o la confiabilidad:</p>
+                    <ul>
+                        <li><strong>RAID 0:</strong> Striping, mejora rendimiento pero sin redundancia.</li>
+                        <li><strong>RAID 1:</strong> Mirroring, duplica datos para tolerancia a fallos.</li>
+                        <li><strong>RAID 5:</strong> Striping con paridad distribuida, balance entre rendimiento y redundancia.</li>
+                        <li><strong>RAID 10:</strong> Combinación de mirroring y striping.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Referencias -->
+        <section>
+            <h2 class="section-title">Referencias y Recursos</h2>
+            <div class="references">
+                <h3><i class="fas fa-book"></i> Bibliografía Recomendada</h3>
+                <ul>
+                    <li>Silberschatz, A., Galvin, P. B., & Gagne, G. (2018). <em>Operating System Concepts</em>. Wiley.</li>
+                    <li>Tanenbaum, A. S., & Bos, H. (2015). <em>Modern Operating Systems</em>. Pearson.</li>
+                    <li>Stallings, W. (2018). <em>Operating Systems: Internals and Design Principles</em>. Pearson.</li>
+                </ul>
+                
+                <h3 style="margin-top: 25px;"><i class="fas fa-link"></i> Enlaces de Interés</h3>
+                <ul>
+                    <li><a href="https://www.kernel.org/" target="_blank">The Linux Kernel Archives</a></li>
+                    <li><a href="https://docs.microsoft.com/en-us/windows/" target="_blank">Documentación de Windows</a></li>
+                    <li><a href="https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/Introduction/Introduction.html" target="_blank">Guía de Sistemas de Archivos de Apple</a></li>
+                    <li><a href="https://www.osdev.org/" target="_blank">OSDev - Desarrollo de Sistemas Operativos</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-university"></i> Universidad de Pamplona</h3>
+                    <p>Facultad de Ingenierías y Arquitectura</p>
+                    <p>Ingeniería de Sistemas</p>
+                    <p>Plataformas Tecnológicas</p>
+                    <p>Docente: Ing. Eduardo Rueda Fajardo</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3><i class="fas fa-envelope"></i> Información de Contacto</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Pamplona, Norte de Santander, Colombia</li>
+                        <li><i class="fas fa-phone"></i> +57 (7) 568 5303</li>
+                        <li><i class="fas fa-envelope"></i> plataformas.tecnologicas@unipamplona.edu.co</li>
+                        <li><i class="fas fa-globe"></i> www.unipamplona.edu.co</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3><i class="fas fa-share-alt"></i> Conecta con Nosotros</h3>
+                    <p>Sigue nuestras redes sociales para estar al tanto de las actualizaciones del curso y materiales adicionales.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Curso de Plataformas Tecnológicas - Universidad de Pamplona. Todos los derechos reservados.</p>
+                <p>Desarrollado con fines académicos - Ingeniería de Sistemas</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para el menú responsive -->
+    <script>
+        // Menú responsive
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Cerrar menú al hacer clic en un enlace (en móviles)
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+        
+        // Efecto de desplazamiento suave para los enlaces del menú
+        document.querySelectorAll('nav ul li a, .banner-content a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Efecto de aparición suave para las tarjetas al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Aplicar efecto a las tarjetas
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
