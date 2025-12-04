@@ -37,6 +37,14 @@
             flex-direction: column;
         }
         
+        /* Clase para dispositivos móviles detectados por JS */
+        body.mobile-optimized {
+            /* Optimizaciones específicas para móviles */
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
         /* Contenedor principal */
         .container {
             width: 100%;
@@ -415,6 +423,55 @@
             font-size: 0.9rem;
         }
         
+        /* Optimizaciones específicas para móviles (aplicadas por JS) */
+        body.mobile-optimized .banner {
+            height: 300px;
+        }
+        
+        body.mobile-optimized .banner h2 {
+            font-size: 1.8rem;
+        }
+        
+        body.mobile-optimized .banner p {
+            font-size: 1rem;
+            max-width: 100%;
+        }
+        
+        body.mobile-optimized .card {
+            padding: 20px 15px;
+        }
+        
+        body.mobile-optimized .card h3 {
+            font-size: 1.3rem;
+        }
+        
+        body.mobile-optimized .card p, 
+        body.mobile-optimized .card li {
+            font-size: 0.95rem;
+        }
+        
+        body.mobile-optimized .section-title {
+            font-size: 1.7rem;
+        }
+        
+        body.mobile-optimized .footer-section {
+            margin-bottom: 25px;
+        }
+        
+        /* Indicador de navegador móvil (para depuración) */
+        .mobile-indicator {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ff00;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            z-index: 9999;
+            display: none;
+        }
+        
         /* Responsive */
         @media (max-width: 992px) {
             .banner h2 {
@@ -492,10 +549,19 @@
             .section-title {
                 font-size: 1.8rem;
             }
+            
+            .mobile-indicator {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Indicador de navegador móvil (visible solo en móviles) -->
+    <div class="mobile-indicator" id="mobileIndicator">
+        Modo móvil activado
+    </div>
+
     <!-- Encabezado -->
     <header>
         <div class="container header-content">
@@ -758,70 +824,411 @@
             </div>
             
             <div class="copyright">
-                <p>&copy; 2023 Curso de Plataformas Tecnológicas - Universidad de Pamplona. Todos los derechos reservados.</p>
+                <p>&copy; 2025 Curso de Plataformas Tecnológicas - Universidad de Pamplona. Todos los derechos reservados.</p>
                 <p>Desarrollado con fines académicos - Ingeniería de Sistemas</p>
             </div>
         </div>
     </footer>
 
-    <!-- Script para el menú responsive -->
+    <!-- Scripts JavaScript -->
     <script>
-        // Menú responsive
-        const menuToggle = document.getElementById('menuToggle');
-        const navMenu = document.getElementById('navMenu');
+        // ============================================
+        // FUNCIÓN PARA ADAPTAR LA PÁGINA A NAVEGADORES MÓVILES
+        // ============================================
         
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-        
-        // Cerrar menú al hacer clic en un enlace (en móviles)
-        document.querySelectorAll('nav ul li a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    navMenu.classList.remove('active');
+        /**
+         * Detecta si el usuario está en un dispositivo móvil y navegador móvil
+         * Aplica optimizaciones específicas para mejorar la experiencia
+         */
+        function adaptarParaMoviles() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(userAgent);
+            const isTablet = /(tablet|ipad|playbook|silk)|(android(?!.*mobile))/i.test(userAgent);
+            const screenWidth = window.innerWidth;
+            
+            // Elementos del DOM que necesitaremos modificar
+            const body = document.body;
+            const mobileIndicator = document.getElementById('mobileIndicator');
+            const banner = document.querySelector('.banner');
+            const bannerTitle = document.querySelector('.banner h2');
+            const cards = document.querySelectorAll('.card');
+            const menuLinks = document.querySelectorAll('nav a');
+            
+            // Detectar características específicas de navegadores móviles
+            const isIOS = /iPad|iPhone|iPod/.test(userAgent);
+            const isAndroid = /android/i.test(userAgent);
+            const isChromeMobile = /chrome\/[0-9]+\./i.test(userAgent) && isMobile;
+            const isSafariMobile = /safari/i.test(userAgent) && isIOS;
+            
+            // Detectar capacidades táctiles
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            
+            // Determinar si estamos en un dispositivo móvil (no tablet)
+            const esDispositivoMovil = isMobile && !isTablet && screenWidth <= 768;
+            
+            // Mostrar información de depuración en el indicador
+            let browserInfo = '';
+            if (isIOS) browserInfo = 'iOS';
+            else if (isAndroid) browserInfo = 'Android';
+            else if (isChromeMobile) browserInfo = 'Chrome Mobile';
+            else if (isSafariMobile) browserInfo = 'Safari Mobile';
+            else browserInfo = 'Mobile Browser';
+            
+            // Aplicar optimizaciones si es un dispositivo móvil
+            if (esDispositivoMovil) {
+                console.log(`Navegador móvil detectado: ${browserInfo}`);
+                console.log(`Ancho de pantalla: ${screenWidth}px`);
+                console.log(`Touchscreen: ${hasTouch}`);
+                
+                // 1. Añadir clase especial al body para CSS específico
+                body.classList.add('mobile-optimized');
+                
+                // 2. Mostrar indicador de navegador móvil (solo en desarrollo)
+                mobileIndicator.textContent = `${browserInfo} - ${screenWidth}px`;
+                mobileIndicator.style.display = 'block';
+                
+                // 3. Optimizar el banner para móviles
+                if (banner) {
+                    banner.style.height = '280px';
                 }
-            });
-        });
-        
-        // Efecto de desplazamiento suave para los enlaces del menú
-        document.querySelectorAll('nav ul li a, .banner-content a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
                 
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
+                if (bannerTitle) {
+                    bannerTitle.style.fontSize = '1.6rem';
+                    bannerTitle.style.lineHeight = '1.3';
+                }
                 
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
+                // 4. Optimizar tarjetas para mejor legibilidad en móviles
+                cards.forEach(card => {
+                    // Aumentar padding para facilitar el tapping
+                    card.style.padding = '20px 15px';
+                    
+                    // Aumentar el tamaño de fuente ligeramente para mejor legibilidad
+                    const cardTexts = card.querySelectorAll('p, li');
+                    cardTexts.forEach(text => {
+                        text.style.fontSize = '0.95rem';
+                        text.style.lineHeight = '1.5';
+                    });
+                    
+                    // Optimizar encabezados de tarjetas
+                    const cardHeaders = card.querySelectorAll('h3');
+                    cardHeaders.forEach(header => {
+                        header.style.fontSize = '1.3rem';
+                        header.style.marginBottom = '12px';
+                    });
+                    
+                    // Añadir área de toque más grande para enlaces en tarjetas
+                    const cardLinks = card.querySelectorAll('a');
+                    cardLinks.forEach(link => {
+                        link.style.padding = '10px 0';
+                        link.style.display = 'inline-block';
+                        link.style.minHeight = '44px'; // Tamaño mínimo recomendado para toque
+                    });
+                });
+                
+                // 5. Optimizar enlaces del menú para toque
+                menuLinks.forEach(link => {
+                    link.style.padding = '15px 20px';
+                    link.style.minHeight = '50px';
+                    link.style.display = 'flex';
+                    link.style.alignItems = 'center';
+                    link.style.justifyContent = 'center';
+                });
+                
+                // 6. Optimizar para Safari iOS específicamente
+                if (isIOS) {
+                    // Prevenir zoom no deseado en inputs (si hubiera)
+                    const inputs = document.querySelectorAll('input, textarea, select');
+                    inputs.forEach(input => {
+                        input.style.fontSize = '16px'; // Previene zoom automático en iOS
+                    });
+                    
+                    // Aplicar estilos específicos para Safari
+                    body.style.WebkitFontSmoothing = 'antialiased';
+                    body.style.textRendering = 'optimizeLegibility';
+                }
+                
+                // 7. Optimizar para Chrome Android
+                if (isAndroid && isChromeMobile) {
+                    // Mejorar rendimiento de desplazamiento
+                    body.style.overflowScrolling = 'touch';
+                    body.style.WebkitOverflowScrolling = 'touch';
+                }
+                
+                // 8. Desactivar animaciones pesadas en móviles para mejor rendimiento
+                if (screenWidth < 480) {
+                    const animatedElements = document.querySelectorAll('.card, .banner-bg');
+                    animatedElements.forEach(el => {
+                        el.style.animation = 'none';
+                        el.style.transition = 'none';
                     });
                 }
+                
+                // 9. Optimizar el footer para móviles
+                const footerSections = document.querySelectorAll('.footer-section');
+                footerSections.forEach(section => {
+                    section.style.marginBottom = '25px';
+                });
+                
+                // 10. Añadir meta viewport dinámico si es necesario
+                const viewportMeta = document.querySelector('meta[name="viewport"]');
+                if (viewportMeta) {
+                    // Para dispositivos muy pequeños, ajustar viewport
+                    if (screenWidth < 360) {
+                        viewportMeta.setAttribute('content', 'width=device-width, initial-scale=0.9, maximum-scale=1.0, user-scalable=yes');
+                    }
+                }
+                
+                // 11. Optimizar eventos táctiles si el dispositivo tiene pantalla táctil
+                if (hasTouch) {
+                    // Añadir clase para indicar que es táctil
+                    body.classList.add('touch-device');
+                    
+                    // Mejorar feedback táctil en botones
+                    const buttons = document.querySelectorAll('a, .card, .menu-toggle');
+                    buttons.forEach(button => {
+                        button.style.cursor = 'pointer';
+                        
+                        // Añadir efecto de retroalimentación táctil
+                        button.addEventListener('touchstart', function() {
+                            this.style.opacity = '0.8';
+                            this.style.transform = 'scale(0.98)';
+                        });
+                        
+                        button.addEventListener('touchend', function() {
+                            this.style.opacity = '1';
+                            this.style.transform = 'scale(1)';
+                        });
+                    });
+                }
+                
+                console.log('Optimizaciones para móviles aplicadas correctamente.');
+                
+            } else {
+                // No es un dispositivo móvil, remover clases específicas
+                body.classList.remove('mobile-optimized');
+                mobileIndicator.style.display = 'none';
+                console.log('Dispositivo no móvil detectado, optimizaciones no aplicadas.');
+            }
+            
+            // Retornar información de detección
+            return {
+                esMovil: esDispositivoMovil,
+                navegador: browserInfo,
+                anchoPantalla: screenWidth,
+                tactil: hasTouch,
+                iOS: isIOS,
+                android: isAndroid
+            };
+        }
+        
+        // ============================================
+        // FUNCIONES AUXILIARES
+        // ============================================
+        
+        // Menú responsive
+        function inicializarMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    // Animación para el icono de hamburguesa
+                    const icon = menuToggle.querySelector('i');
+                    if (navMenu.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Cerrar menú al hacer clic en un enlace (en móviles)
+                document.querySelectorAll('nav ul li a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth <= 768) {
+                            navMenu.classList.remove('active');
+                            const icon = menuToggle.querySelector('i');
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    });
+                });
+            }
+        }
+        
+        // Efecto de desplazamiento suave para los enlaces del menú
+        function inicializarDesplazamientoSuave() {
+            document.querySelectorAll('nav ul li a, .banner-content a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
-        });
+        }
         
         // Efecto de aparición suave para las tarjetas al hacer scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
+        function inicializarAnimacionesScroll() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Aplicar efecto a las tarjetas
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
             });
-        }, observerOptions);
+        }
         
-        // Aplicar efecto a las tarjetas
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(card);
+        // Detectar cambios de orientación y tamaño de ventana
+        function inicializarEventosResponsivos() {
+            // Redimensionar ventana
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function() {
+                    // Re-aplicar detección de móviles al redimensionar
+                    const info = adaptarParaMoviles();
+                    console.log(`Ventana redimensionada: ${window.innerWidth}x${window.innerHeight}`);
+                    console.log(`Nuevo estado móvil: ${info.esMovil ? 'Sí' : 'No'}`);
+                }, 250);
+            });
+            
+            // Cambio de orientación
+            window.addEventListener('orientationchange', function() {
+                setTimeout(function() {
+                    adaptarParaMoviles();
+                    console.log(`Orientación cambiada: ${window.orientation}`);
+                }, 300);
+            });
+        }
+        
+        // ============================================
+        // INICIALIZACIÓN AL CARGAR LA PÁGINA
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Página cargada, inicializando funciones...');
+            
+            // 1. Aplicar detección y optimización para móviles
+            const infoDispositivo = adaptarParaMoviles();
+            
+            // 2. Inicializar componentes
+            inicializarMenu();
+            inicializarDesplazamientoSuave();
+            inicializarAnimacionesScroll();
+            inicializarEventosResponsivos();
+            
+            // 3. Mostrar información en consola
+            console.log('=== INFORMACIÓN DEL DISPOSITIVO ===');
+            console.log(`Es móvil: ${infoDispositivo.esMovil ? 'Sí' : 'No'}`);
+            console.log(`Navegador: ${infoDispositivo.navegador}`);
+            console.log(`Ancho de pantalla: ${infoDispositivo.anchoPantalla}px`);
+            console.log(`Táctil: ${infoDispositivo.tactil ? 'Sí' : 'No'}`);
+            console.log(`iOS: ${infoDispositivo.iOS ? 'Sí' : 'No'}`);
+            console.log(`Android: ${infoDispositivo.android ? 'Sí' : 'No'}`);
+            console.log('====================================');
+            
+            // 4. Añadir mensaje de bienvenida para móviles
+            if (infoDispositivo.esMovil) {
+                setTimeout(function() {
+                    const welcomeMsg = document.createElement('div');
+                    welcomeMsg.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: rgba(0, 212, 255, 0.9);
+                        color: var(--primary-color);
+                        padding: 12px 20px;
+                        border-radius: 10px;
+                        font-weight: bold;
+                        z-index: 9999;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                        animation: slideDown 0.5s ease;
+                        text-align: center;
+                        max-width: 90%;
+                    `;
+                    
+                    // Crear keyframes para la animación
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes slideDown {
+                            from { top: -100px; opacity: 0; }
+                            to { top: 20px; opacity: 1; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                    
+                    welcomeMsg.innerHTML = `
+                        <i class="fas fa-mobile-alt"></i> Modo móvil optimizado
+                        <div style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">
+                            Vista adaptada para ${infoDispositivo.navegador}
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(welcomeMsg);
+                    
+                    // Eliminar mensaje después de 3 segundos
+                    setTimeout(function() {
+                        welcomeMsg.style.animation = 'slideUp 0.5s ease forwards';
+                        
+                        // Crear keyframes para desvanecimiento
+                        const fadeStyle = document.createElement('style');
+                        fadeStyle.textContent = `
+                            @keyframes slideUp {
+                                from { top: 20px; opacity: 1; }
+                                to { top: -100px; opacity: 0; }
+                            }
+                        `;
+                        document.head.appendChild(fadeStyle);
+                        
+                        setTimeout(function() {
+                            if (welcomeMsg.parentNode) {
+                                welcomeMsg.parentNode.removeChild(welcomeMsg);
+                            }
+                        }, 500);
+                    }, 3000);
+                }, 1000);
+            }
+        });
+        
+        // 5. Manejar evento antes de que la página se descargue (para móviles)
+        window.addEventListener('beforeunload', function() {
+            // Guardar información sobre si estaba en modo móvil
+            if (body.classList.contains('mobile-optimized')) {
+                sessionStorage.setItem('wasMobileOptimized', 'true');
+            }
+        });
+        
+        // 6. Comprobar si ya estaba en modo móvil al cargar
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted && sessionStorage.getItem('wasMobileOptimized') === 'true') {
+                // La página viene de cache, reaplicar optimizaciones rápidamente
+                setTimeout(adaptarParaMoviles, 100);
+            }
         });
     </script>
 </body>
